@@ -1,33 +1,7 @@
 include(CheckCXXCompilerFlag)
 include("../cmake/common.cmake")
 
-include(CheckIncludeFile)
-check_include_file("cblas.h" HAVE_CBLAS_H)
-if (NOT HAVE_CBLAS_H)
-    message(FATAL_ERROR "OpenBLAS headers not found")
-endif()
-
-
 add_compile_definitions(GGML_SCHED_MAX_COPIES=${GGML_SCHED_MAX_COPIES})
-
-# --- OpenBLAS configuration for Windows ARM64 ---
-if (WIN32 AND CMAKE_SYSTEM_PROCESSOR MATCHES "ARM64")
-    set(BLAS_ROOT "C:/Users/User/openblas")
-    set(BLAS_INCLUDE_DIRS "${BLAS_ROOT}/include" "${BLAS_ROOT}/include/openblas")
-    set(BLAS_LIBRARIES "${BLAS_ROOT}/lib/openblas.lib")
-
-    set(GGML_BLAS ON)  # ensure backend is built
-    add_definitions(-DGGML_USE_BLAS)  # ensure C code uses BLAS path
-endif()
-
-ggml_add_backend(BLAS)
-
-if (TARGET ggml-blas)
-    target_include_directories(ggml-blas PRIVATE ${BLAS_INCLUDE_DIRS})
-    target_link_libraries(ggml-blas PRIVATE ${BLAS_LIBRARIES})
-endif()
-# --- End OpenBLAS configuration ---
-
 
 # enable libstdc++ assertions for debug builds
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -396,11 +370,7 @@ elseif (GGML_CPU)
     ggml_add_cpu_backend_variant_impl("")
 endif()
 
-set(GGML_BLAS ON)
 ggml_add_backend(BLAS)
-target_include_directories(ggml-blas PRIVATE ${BLAS_INCLUDE_DIRS})
-target_link_libraries(ggml-blas PRIVATE ${BLAS_LIBRARIES})
-
 ggml_add_backend(CANN)
 ggml_add_backend(CUDA)
 ggml_add_backend(HIP)

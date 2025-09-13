@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\llama.cpp",
+    "\\llama.cpp\\common",
+    "\\llama.cpp\\include",
+    "\\llama.cpp\\src",
+    "\\llama.cpp\\tools",
+    "\\llama.cpp\\vendor",
+    "\\patches"
+  ],
+  "SelectedNode": "\\llama.cpp",
+  "PreviewInSolutionExplorer": false
+}

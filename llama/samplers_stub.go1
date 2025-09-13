@@ -1,0 +1,11 @@
+//go:build windows && arm64
+
+package llama
+
+type Grammar struct{}
+
+func NewGrammar(data []byte) *Grammar {
+	return &Grammar{}
+}
+
+type TokenData struct{}

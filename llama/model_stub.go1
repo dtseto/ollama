@@ -1,0 +1,13 @@
+//go:build windows && arm64
+
+package llama
+
+type Model struct{}
+
+type ModelParams struct{}
+
+func LoadModelFromFile(path string, params ModelParams) (*Model, error) {
+	return &Model{}, nil
+}
+
+func FreeModel(m *Model) {}
