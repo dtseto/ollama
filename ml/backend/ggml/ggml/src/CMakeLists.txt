@@ -1,11 +1,21 @@
-include(CheckCXXCompilerFlag)
-include("../cmake/common.cmake")
+# Load ggml macros
+include("${CMAKE_CURRENT_SOURCE_DIR}/../cmake/common.cmake")
+message(STATUS "Loaded common.cmake")
 
+include(CheckCXXCompilerFlag)
+
+
+# Make OpenBLAS headers visible to check_include_file
+set(CMAKE_REQUIRED_INCLUDES "C:/Users/User/openblas/include")
+include_directories("C:/Users/User/openblas/include")
+
+# Check for cblas.h
 include(CheckIncludeFile)
 check_include_file("cblas.h" HAVE_CBLAS_H)
 if (NOT HAVE_CBLAS_H)
-    message(FATAL_ERROR "OpenBLAS headers not found")
+  message(FATAL_ERROR "OpenBLAS headers not found")
 endif()
+
 
 
 add_compile_definitions(GGML_SCHED_MAX_COPIES=${GGML_SCHED_MAX_COPIES})
@@ -19,8 +29,6 @@ if (WIN32 AND CMAKE_SYSTEM_PROCESSOR MATCHES "ARM64")
     set(GGML_BLAS ON)  # ensure backend is built
     add_definitions(-DGGML_USE_BLAS)  # ensure C code uses BLAS path
 endif()
-
-ggml_add_backend(BLAS)
 
 if (TARGET ggml-blas)
     target_include_directories(ggml-blas PRIVATE ${BLAS_INCLUDE_DIRS})

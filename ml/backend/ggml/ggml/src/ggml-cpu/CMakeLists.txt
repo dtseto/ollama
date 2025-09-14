@@ -24,8 +24,6 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
     list (APPEND GGML_CPU_SOURCES
         ggml-cpu/ggml-cpu.c
         ggml-cpu/ggml-cpu.cpp
-        ggml-cpu/repack.cpp
-        ggml-cpu/repack.h
         ggml-cpu/hbm.cpp
         ggml-cpu/hbm.h
         ggml-cpu/quants.c
@@ -102,11 +100,10 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
         message(STATUS "ARM detected")
         list(APPEND GGML_CPU_SOURCES
             ggml-cpu/arch/arm/quants.c
-            ggml-cpu/arch/arm/repack.cpp
             )
 
         if (MSVC AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
-            message(FATAL_ERROR "MSVC is not supported for ARM, use clang")
+            message(WARNING "MSVC is not supported for ARM, use clang")
         else()
             check_cxx_compiler_flag(-mfp16-format=ieee GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E)
             if (NOT "${GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E}" STREQUAL "")

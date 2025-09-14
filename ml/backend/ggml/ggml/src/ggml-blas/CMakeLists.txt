@@ -74,9 +74,9 @@ if (BLAS_FOUND)
 
     target_compile_options(ggml-blas PRIVATE ${BLAS_LINKER_FLAGS})
 
-    if (${BLAS_INCLUDE_DIRS} MATCHES "mkl" AND (${GGML_BLAS_VENDOR} MATCHES "Generic" OR ${GGML_BLAS_VENDOR} MATCHES "Intel"))
-        add_compile_definitions(GGML_BLAS_USE_MKL)
-    endif()
+#    if (${BLAS_INCLUDE_DIRS} MATCHES "mkl" AND (${GGML_BLAS_VENDOR} MATCHES "Generic" OR #${GGML_BLAS_VENDOR} MATCHES "Intel"))
+#        add_compile_definitions(GGML_BLAS_USE_MKL)
+#    endif()
 
     target_link_libraries     (ggml-blas PRIVATE ${BLAS_LIBRARIES})
     target_include_directories(ggml-blas PRIVATE ${BLAS_INCLUDE_DIRS})
@@ -85,3 +85,12 @@ else()
                         "https://cmake.org/cmake/help/latest/module/FindBLAS.html#blas-lapack-vendors"
                         " to set correct GGML_BLAS_VENDOR")
 endif()
+
+#add_library(ggml-blas STATIC ${GGML_BLAS_SOURCES})
+
+#target_include_directories(ggml-blas PUBLIC ${BLAS_INCLUDE_DIRS})
+#target_link_libraries(ggml-blas PUBLIC ${BLAS_LIBRARIES})
+
+# Optional: define macro if needed
+#target_compile_definitions(ggml-blas PUBLIC GGML_USE_BLAS)
+
